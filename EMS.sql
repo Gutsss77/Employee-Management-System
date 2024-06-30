@@ -25,3 +25,7 @@ FOREIGN KEY (emp_id) REFERENCES employees(emp_id) ON DELETE CASCADE
 
 SELECT * FROM attendance;
 SELECT * FROM employees;
+
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin21';
+GRANT ALL PRIVILEGES ON employee_management.* TO 'admin'@'localhost';
+FLUSH PRIVILEGES;
