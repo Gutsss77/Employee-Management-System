@@ -1,4 +1,5 @@
 #Employee Management System
+
 This project is a simple Employee Management System with several functionalities as discussed below.
 
 The project is written in Python with database connectivity. Currently, this project is under development. If you find anything incorrect or you want to add something, you can contact me. This project includes the following features:
