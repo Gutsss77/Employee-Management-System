@@ -8,7 +8,7 @@ from datetime import datetime
 super = tk.Tk()
 super.title("Employee Main Window")
 super.resizable(False, False)
-super.geometry("1000x330")
+super.geometry("1000x405")
 
 def connect_to_db():
     try:
@@ -267,23 +267,68 @@ def View_emp():
         tree.insert("", "end", values=row)
 # End of view employee
 
-Emp_login = tk.Button(super, text="New Employee", command=New_emp, font=("Helvetica", 15, "bold"), height=4, width=17)
+# Delete employee box start from here
+def Delete_emp():
+    def delete_employee():
+        emp_id = entry_employee_id.get()
+
+        if not emp_id:
+            messagebox.showerror("Input Error", "Employee ID cannot be empty")
+            return
+
+        conn = connect_to_db()
+        if conn is None:
+            return
+
+        cursor = conn.cursor()
+        try:
+            cursor.execute("DELETE FROM employees WHERE emp_id = %s", (emp_id,))
+            if cursor.rowcount == 0:
+                messagebox.showerror("Deletion Error", f"No employee found with ID {emp_id}")
+            else:
+                conn.commit()
+                messagebox.showinfo("Success", f"Employee with ID {emp_id} deleted successfully")
+                entry_employee_id.delete(0, tk.END)
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Error: {err}")
+        finally:
+            conn.close()
+
+    root = tk.Toplevel(super)
+    root.title("Delete Employee")
+    root.resizable(False, False)
+
+    tk.Label(root, text="Employee ID:", fg="lavender").grid(row=0, column=0, padx=2, pady=5, sticky="w")
+    entry_employee_id = tk.Entry(root, borderwidth=3, bg="black", fg="lavender")
+    entry_employee_id.grid(row=0, column=1, padx=2, pady=5, sticky="ew")
+
+    button_delete = tk.Button(root, text="Delete Employee", command=delete_employee, fg="red")
+    button_delete.grid(row=1, column=0, columnspan=2, padx=10, pady=5)
+
+    root.mainloop()
+# End of delete employee
+
+Emp_login = tk.Button(super, text="New Employee", command=New_emp, font=("Helvetica", 15, "bold"), height=4, width=15)
 Emp_login.grid(row=0, column=0)
 
-Emp_create = tk.Button(super, text="View All Employee", command=View_emp, font=("Helvetica", 15, "bold"), height=4, width=17)
+Emp_create = tk.Button(super, text="View All Employee", command=View_emp, font=("Helvetica", 15, "bold"), height=4, width=15)
 Emp_create.grid(row=1, column=0)
 
-Emp_view = tk.Button(super, text="Employee Login", command=but_emp_log, font=("Helvetica", 15, "bold"), height=4, width=17)
+Emp_view = tk.Button(super, text="Employee Login", command=but_emp_log, font=("Helvetica", 15, "bold"), height=4, width=15)
 Emp_view.grid(row=2, column=0)
 
-Emp_attend = tk.Button(super, text="Attendance Here", command=but_Emp_Attend, font=("Helvetica", 15, "bold"), height=4, width=17)
+Emp_attend = tk.Button(super, text="Attendance Here", command=but_Emp_Attend, font=("Helvetica", 15, "bold"), height=4, width=15)
 Emp_attend.grid(row=3, column=0)
 
-tree = ttk.Treeview(super, columns=("Employee ID", "Name", "Position", "Department"), show='headings', height=16)
+Emp_delete = tk.Button(super, text="Delete Employee", command=Delete_emp, font=("Helvetica", 15, "bold"), height=4, width=15)
+Emp_delete.grid(row=4, column=0)
+
+tree = ttk.Treeview(super, columns=("Employee ID", "Name", "Position", "Department"), show='headings', height=20)
 tree.heading("Employee ID", text="Employee ID")
 tree.heading("Name", text="Name")
 tree.heading("Position", text="Position")
 tree.heading("Department", text="Department")
-tree.grid(row=0, column=1, rowspan=4)
+tree.grid(row=0, column=1, rowspan=5)
 
 super.mainloop()
+
