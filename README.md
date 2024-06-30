@@ -14,7 +14,6 @@ The database used is MySQL, and the code for the database is provided in the "EM
 
 If you have any additions or new ideas regarding this project, feel free to share them by contacting me:
 
-Gmail: lxngvx7@gmail.com
+Gmail: lxngvx7@gmail.com, anmolsagar.2002@gmail.com
 WhatsApp: +91 9810863005
-Instagram: @xd_ansh021
 Thank you!
